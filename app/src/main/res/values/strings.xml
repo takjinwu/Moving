@@ -6,8 +6,18 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
+    <string name="login">Login</string>
+    <string name="login2">로그인</string>
+    <string name="login_id">ID</string>
+    <string name="login_pw">PASSWORD</string>
+    <string name="register">회원가입</string>
+    <string name="register_id">아이디를 입력해주세요.</string>
+    <string name="register_pw">비밀번호를 입력해주세요.</string>
+    <string name="register_pw2">비밀번호 확인</string>
+    <string name="login_id_save">아이디 저장하기</string>
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
