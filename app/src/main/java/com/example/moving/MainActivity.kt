@@ -2,6 +2,7 @@ package com.example.moving
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem // MenuItem import
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -14,18 +15,19 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.moving.databinding.ActivityMainBinding
 import android.util.Log
 import android.widget.TextView
+import androidx.core.view.GravityCompat // GravityCompat import
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.ListenerRegistration // 메모리 누수 방지를 위해 import
+import com.google.firebase.firestore.ListenerRegistration
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var dataTextView: TextView // 뷰 참조를 클래스 변수로 이동
-    private var firestoreListener: ListenerRegistration? = null // 리스너 관리를 위한 변수
+    private lateinit var dataTextView: TextView
+    private var firestoreListener: ListenerRegistration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         // Navigation Drawer 설정
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
+
         // R.id.nav_host_fragment_content_main는 Navigation Component의 FragmentContainer ID입니다.
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
@@ -54,7 +57,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
             ), drawerLayout
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // ⭐ 이 코드를 제거/주석 처리하여 자동 햄버거 메뉴 생성을 막습니다.
+        // setupActionBarWithNavController(navController, appBarConfiguration)
+
         navView.setupWithNavController(navController)
 
         // 화면에 데이터를 표시할 TextView 참조를 가져옵니다.
@@ -71,16 +77,14 @@ class MainActivity : AppCompatActivity() {
     private fun setupFirestoreListener() {
         val db = FirebaseFirestore.getInstance()
 
-        firestoreListener = db.collection("test") // 컬렉션 이름: test
-            .document("test")  // 문서 ID: test
-            // addSnapshotListener()를 사용하여 실시간 감지 리스너 등록
+        firestoreListener = db.collection("test")
+            .document("test")
             .addSnapshotListener { document: DocumentSnapshot?, e: FirebaseFirestoreException? ->
 
                 // 1. 오류 처리
                 if (e != null) {
                     dataTextView.text = "데이터 실시간 감지 실패: ${e.message}"
                     Log.e("FirestoreTest", "실시간 감지 실패", e)
-                    // 리스너를 해제할 필요는 없습니다. 어차피 오류 발생 시 자동으로 멈출 수 있습니다.
                     return@addSnapshotListener
                 }
 
@@ -112,14 +116,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // 메뉴 레이아웃을 인플레이트합니다. (R.menu.main)
-        menuInflater.inflate(R.menu.main, menu)
+        // ⭐ R.menu.main 대신 오른쪽 버튼을 위한 메뉴를 인플레이트합니다. (right_menu가 존재해야 함)
+        menuInflater.inflate(R.menu.right_menu, menu)
         return true
     }
 
+    // ⭐ 메뉴 항목 클릭 시 드로어를 열도록 처리
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // 오른쪽 툴바의 버튼(ID: action_open_drawer)이 클릭되었는지 확인
+        if (item.itemId == R.id.action_open_drawer) {
+            val drawerLayout: DrawerLayout = binding.drawerLayout
+            // 드로어를 오른쪽 (end)에서 엽니다. (activity_main.xml에서 layout_gravity="end"로 변경했기 때문)
+            drawerLayout.openDrawer(GravityCompat.END)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        // Navigation Up (뒤로가기 또는 햄버거 메뉴)을 처리합니다.
+        // 뒤로 가기 버튼 처리만 남깁니다. (햄버거 메뉴 처리는 onOptionsItemSelected에서 수동 처리)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

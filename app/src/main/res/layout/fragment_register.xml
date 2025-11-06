@@ -80,46 +80,43 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
         <EditText
-
-            android:id="@+id/editTextNumberPassword"
+            android:id="@+id/editTextTextPassword2"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="@string/login_pw"
+            android:layout_marginTop="12dp"
             android:background="#E2E2E2"
-            android:inputType="numberPassword"
+            android:ems="10"
+            android:hint="PASSWORD"
+            android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         <TextView
-            android:textColor="#6C28FE"
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
             android:text="@string/register_pw2"
+            android:textColor="#6C28FE"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNumberPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2" />
 
         <EditText
             android:id="@+id/editTextTextPassword"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="8dp"
-            android:ems="10"
+            android:layout_marginTop="24dp"
             android:background="#E2E2E2"
+            android:ems="10"
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -128,10 +125,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="168dp"
+            android:layout_marginTop="88dp"
             android:text="@string/login_id_save"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
 
@@ -145,10 +142,12 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.161"
+            app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/checkBox"
-            app:layout_constraintVertical_bias="0.308" />
+            app:layout_constraintVertical_bias="0.276" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
