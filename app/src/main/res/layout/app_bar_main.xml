@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +8,7 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.Moving.AppBarOverlay">
@@ -15,8 +17,17 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.Moving.PopupOverlay" />
+            android:background="@color/white"
+            app:popupTheme="@style/Theme.Moving.PopupOverlay"
+            app:contentInsetStart="0dp"                 app:contentInsetStartWithNavigation="0dp">  <ImageView
+            android:id="@+id/toolbar_logo"
+            android:layout_width="102dp"
+            android:layout_height="58dp"
+            android:src="@drawable/moving"
+            android:layout_gravity="start"
+            android:layout_marginStart="-16dp"  android:contentDescription="앱 로고" />
+
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
