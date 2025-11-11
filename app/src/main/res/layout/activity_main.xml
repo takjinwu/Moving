@@ -42,8 +42,6 @@
                 android:stateListAnimator="@null"
                 android:textColor="@android:color/black"
                 android:text="@string/logout" />
-
-
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
 
