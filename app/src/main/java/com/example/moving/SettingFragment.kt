@@ -1,59 +1,49 @@
 package com.example.moving
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController // ⭐️ [추가] Navigation Component 사용을 위한 import
+import com.example.moving.databinding.FragmentSettingBinding // 가정: SettingFragment의 바인딩 클래스
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SettingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SettingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentSettingBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_setting, container, false)
+    ): View {
+        // fragment_setting.xml 레이아웃 인플레이트
+        _binding = FragmentSettingBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SettingFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SettingFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // ⭐️ [핵심 로직 1] Fragment가 나타날 때 Toolbar 숨기기
+        (activity as? MainActivity)?.binding?.appBarMain?.toolbar?.visibility = View.GONE
+
+        // ⭐️ [추가된 로직] arrow 이미지(imageView12) 클릭 리스너 설정
+        binding.imageView12.setOnClickListener {
+            // Navigation Component를 사용하여 이전 목적지로 이동 (뒤로 가기)
+            findNavController().navigateUp()
+        }
+
+        // 여기에 다른 UI 로직 (닉네임 변경 등)을 구현합니다.
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        // ⭐️ [핵심 로직 2] Fragment가 화면에서 사라질 때 Toolbar 다시 보이게 하기
+        (activity as? MainActivity)?.binding?.appBarMain?.toolbar?.visibility = View.VISIBLE
+
+        // 메모리 누수 방지를 위해 바인딩 해제
+        _binding = null
     }
 }

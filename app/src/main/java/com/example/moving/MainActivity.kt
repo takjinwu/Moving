@@ -18,7 +18,8 @@ import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    // ⭐️ [수정 사항]: private -> internal 로 변경하여 Fragment에서 접근 가능하게 함
+    internal lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main) // NavController를 미리 가져옵니다.
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
@@ -37,17 +38,13 @@ class MainActivity : AppCompatActivity() {
         binding.appBarMain.toolbar.navigationIcon = null
 
         // ⭐️ 툴바 로고 클릭 리스너 설정
-        // R.id.toolbar_logo는 app_bar_main.xml에 정의되어 있습니다.
         binding.appBarMain.toolbarLogo.setOnClickListener {
             try {
-                // MainPageFragment의 ID인 nav_main_page로 이동합니다.
                 navController.navigate(R.id.mainPageFragment)
             } catch (e: Exception) {
                 Log.e("Navigation", "Error navigating to main page: ${e.message}")
             }
         }
-
-
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -55,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_monthly_discount, R.id.nav_movie_review,
-                R.id.nav_movie_chart, R.id.nav_cinema_list, R.id.nav_setting, R.id.mainPageFragment // R.id.nav_main_page로 변경
+                R.id.nav_movie_chart, R.id.nav_cinema_list, R.id.nav_setting, R.id.mainPageFragment
             ), drawerLayout
         )
 
