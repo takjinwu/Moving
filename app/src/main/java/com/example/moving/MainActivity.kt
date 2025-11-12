@@ -47,10 +47,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "FAB 클릭", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
