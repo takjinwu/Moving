@@ -1,28 +1,25 @@
 package com.example.moving
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import android.view.MenuItem
+import android.widget.Button
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import com.example.moving.databinding.ActivityMainBinding
-import android.util.Log
-import android.widget.TextView // TextView 사용을 위해 필요
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,77 +27,80 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val navController = findNavController(R.id.nav_host_fragment_content_main) // NavController를 미리 가져옵니다.
+
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .setAnchorView(R.id.fab).show()
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
+        binding.appBarMain.toolbar.navigationIcon = null
+
+        // ⭐️ 툴바 로고 클릭 리스너 설정
+        // R.id.toolbar_logo는 app_bar_main.xml에 정의되어 있습니다.
+        binding.appBarMain.toolbarLogo.setOnClickListener {
+            try {
+                // MainPageFragment의 ID인 nav_main_page로 이동합니다.
+                navController.navigate(R.id.mainPageFragment)
+            } catch (e: Exception) {
+                Log.e("Navigation", "Error navigating to main page: ${e.message}")
+            }
         }
+
+
+
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_monthly_discount, R.id.nav_movie_review,
+                R.id.nav_movie_chart, R.id.nav_cinema_list, R.id.nav_setting, R.id.mainPageFragment // R.id.nav_main_page로 변경
             ), drawerLayout
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
 
-        // 화면에 데이터를 표시할 TextView 참조를 가져옵니다.
-        // R.id.firestore_data_textview는 XML 레이아웃에 정의되어 있어야 합니다.
-        val dataTextView = findViewById<TextView>(R.id.firestore_data_textview)
-        dataTextView.text = "데이터 로딩 중..."
-        // ===============================================
-        // Firestore 데이터 실시간 감지 (addSnapshotListener) 로직
-        val db = FirebaseFirestore.getInstance()
-
-        db.collection("test") // 컬렉션 이름: test
-            .document("test")  // 문서 ID: test
-            // get() 대신 addSnapshotListener()를 사용하여 실시간 감지
-            .addSnapshotListener { document: DocumentSnapshot?, e: FirebaseFirestoreException? ->
-
-                // 1. 오류 처리
-                if (e != null) {
-                    dataTextView.text = "데이터 실시간 감지 실패: ${e.message}"
-                    Log.e("FirestoreTest", "실시간 감지 실패", e)
-                    return@addSnapshotListener
-                }
-
-                // 2. 문서 존재 여부 및 데이터 처리
-                if (document != null && document.exists()) {
-                    // Firestore 필드 'test'의 값을 가져옵니다.
-                    val testValue = document.getString("test")
-
-                    if (testValue != null) {
-                        // 성공적으로 값을 가져오면 TextView를 업데이트합니다.
-                        // Firestore 데이터가 변경될 때마다 이 부분이 실행됩니다.
-                        dataTextView.text = "Firestore Data (Realtime): $testValue"
-                        Log.d("FirestoreUI", "실시간 화면 업데이트 성공: $testValue")
-                    } else {
-                        // 필드는 있지만 값이 null이거나 형식이 다를 경우
-                        dataTextView.text = "Firestore Error: 'test' 필드 값이 없거나 타입 오류"
-                        Log.w("FirestoreTest", "필드 'test'의 값이 null이거나 없음")
-                    }
-                } else {
-                    // 문서가 존재하지 않거나 삭제되었을 경우
-                    dataTextView.text = "Firestore Error: 문서를 찾을 수 없음"
-                    Log.w("FirestoreTest", "문서 'test/test'를 찾을 수 없음")
-                }
+        navView.setNavigationItemSelectedListener { item ->
+            val handled = try {
+                navController.navigate(item.itemId)
+                true
+            } catch (e: Exception) {
+                Log.e("Navigation", "Navigation failed for item ${item.itemId}: ${e.message}")
+                false
             }
+
+            drawerLayout.closeDrawer(GravityCompat.END)
+            handled
+        }
+
+        val logoutButton = navView.findViewById<Button>(R.id.logout_button_footer)
+        logoutButton.setOnClickListener {
+            Snackbar.make(drawerLayout, "로그아웃 처리 중...", Snackbar.LENGTH_SHORT).show()
+
+            val intent = Intent(this, FirstActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            startActivity(intent)
+            finish()
+
+            drawerLayout.closeDrawer(GravityCompat.END)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
+        menuInflater.inflate(R.menu.right_menu, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_open_drawer) {
+            binding.drawerLayout.openDrawer(GravityCompat.END)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

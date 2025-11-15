@@ -3,23 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/mainPageFragment">
+
+
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.moving.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_monthly_discount"
+        android:name="com.example.moving.MonthlyDiscountFragment"
+        android:label="@string/monthly_discount"
+        tools:layout="@layout/fragment_monthly_discount" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.moving.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_cinema_list" android:name="com.example.moving.chw.CinemaListFragment"
+        android:label="@string/cinema_list"
+        tools:layout="@layout/fragment_cinema_list" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.moving.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_movie_chart" android:name="com.example.moving.chw.MovieChartFragment"
+        android:label="@string/movie_chart"
+        tools:layout="@layout/fragment_movie_chart" />
+
+    <fragment
+        android:id="@+id/nav_setting" android:name="com.example.moving.SettingFragment"
+        android:label="@string/setting"
+        tools:layout="@layout/fragment_setting" />
+
+    <fragment
+        android:id="@+id/nav_movie_review" android:name="com.example.moving.MovieReviewFragment"
+        android:label="@string/movie_review"
+        tools:layout="@layout/fragment_movie_review" />
+    <fragment
+        android:id="@+id/mainPageFragment"
+        android:name="com.example.moving.MainPageFragment"
+        android:label="fragment_main_page"
+        tools:layout="@layout/fragment_main_page" />
+
 </navigation>

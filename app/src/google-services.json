@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "121764902237",
+    "firebase_url": "https://moving-24704-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "moving-24704",
+    "storage_bucket": "moving-24704.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121764902237:android:0ab298a662946f97f8e4b4",
+        "android_client_info": {
+          "package_name": "com.example.moving"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBIHN5NtY2eMselLAqsLjADQNPwJmyAJs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],//ddddd
+  "configuration_version": "1"
+}
